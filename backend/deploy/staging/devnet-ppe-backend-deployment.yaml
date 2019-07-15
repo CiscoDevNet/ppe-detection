@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ppe-backend-secret
+type: Opaque
+data:
+  authToken: MjE3YzQ0NTAtNmFlMi03N2RmLWYzMWQtOTAxZDg0YWZkODYz
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: devnet-ppe-backend
+  labels:
+    app: devnet-ppe-backend
+    tier: backend
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: devnet-ppe-backend
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: devnet-ppe-backend
+spec:
+  replicas: {{.Service.Replicas}}
+  template:
+    metadata:
+      labels:
+        app: devnet-ppe-backend
+        tier: backend
+    spec:
+      containers:
+      - name: devnet-ppe-backend
+        image: {{.Service.Image}}:{{.Service.Label}}
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256M"
+          limits:
+            cpu: "500m"
+            memory: "512M"
+        env:
+        - name: AUTH_COOKIE_EXTENSION
+          value: "_stage"
+        - name: AUTH_COOKIE_DOMAIN
+          value: ".cisco.com"
+        - name: PPE_BACKEND_CASSANDRA_HOSTS
+          value: cassandra:9042
+        - name: PPE_BACKEND_CASSANDRA_KEYSPACE
+          value: ppe
+        - name: PPE_BACKEND_CASSANDRA_REPLICATION
+          value: "1"
+        - name: PPE_BACKEND_CASSANDRA_USERNAME
+          value: careful
+        - name: PPE_BACKEND_CASSANDRA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: cassandra-backup-secret
+              key: CassandraPassword
+        - name: PPE_BACKEND_PORT
+          value: "80"
+        - name: PPE_BACKEND_HOST
+          value: 0.0.0.0
+        - name: PPE_BACKEND_ENCRYPTION_DEFAULT_KEY
+          value: default_key
+        - name: PPE_BACKEND_ENCRYPTION_BASEURL
+          value: http://vault.admin:8200
+        - name: PPE_BACKEND_ENCRYPTION_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: authToken
+              name: ppe-backend-secret
+        - name: BLOB_BASEURL
+          value: http://devnet-blob
+        - name: CORS_WHITELIST_FILEPATH
+          value: "/etc/cors/cors.list"
+        - name: LOG_LEVEL
+          value: "info"
+        - name: LOG_TYPE
+          value: "json"
+        - name: FLASK_ENV
+          value: "production"
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: cors-conf
+          mountPath: /etc/cors
+          readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /v1/healthz
+            port: 80
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+      restartPolicy: Always
+      volumes:
+        - name: cors-conf
+          configMap:
+            name: devnet-eng-cors

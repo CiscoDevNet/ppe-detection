@@ -1,0 +1,6 @@
+export FLASK_DEBUG=1
+export SPARK_ENABLED=False
+export PPE_BACKEND_PORT=7033
+# export SOCKETIO_ASYNC_MODE=gevent
+export SOCKETIO_ASYNC_MODE=eventlet
+# export FLASK_DEBUG=0

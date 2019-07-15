@@ -1,0 +1,13 @@
+{
+  "css": {
+    "platform-sdk": "https://static.production.devnetcloud.com/platformsdk/sdk.css"
+  },
+  "js": {
+    "analytics-sdk": "https://static.production.devnetcloud.com/analyticSDK/sdk.js",
+    "platform-sdk": "https://static.production.devnetcloud.com/platformsdk/sdk.js"
+  },
+  "window": {},
+  "config": {
+    "API_ENDPOINT_URL": "https://devnet.cisco.com"
+  }
+}

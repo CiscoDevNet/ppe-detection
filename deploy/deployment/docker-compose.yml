@@ -1,0 +1,51 @@
+version: '3'
+services:
+  cassandra:
+    image: cassandra:3.10
+    ports:
+      - "9062:9042"
+      - "9180:9160"
+    restart: always
+    volumes:
+      - .data/cassandra:/var/lib/cassandra
+
+  redis:
+    command: "redis-server --appendonly yes"
+    ports:
+      - "6399:6379"
+    volumes:
+      - .data/redis:/data
+
+  ppe-backend:
+    image: containers.cisco.com/cocreate/ppe-backend:latest
+    ports:
+      - "9030:7030"
+    environment:
+      - PPE_BACKEND_CASSANDRA_HOSTS=cassandra
+      - REDIS_HOST=redis
+      #- SOCKETIO_ASYNC_MODE=threading
+      - SOCKETIO_ASYNC_MODE=eventlet
+      - SPARK_ENABLED=False
+      - SPARK_DEBUG=False
+      - REDIS_ENABLED=True
+      - IMAGE_TTL=300
+      - IMAGE_ROOT_URL=http://localhost:7030/v1/images/
+      #- IMAGE_ROOT_URL=http://ppe-demo.devnetcloud.com/v1/images/
+    depends_on:
+      - "cassandra"
+    entrypoint: ["wait-for.sh", "cassandra:9042", "--", "python", "/opt/ppe-backend/main.py"]
+    volumes:
+      - .images:/tmp/ppe
+      #- /opt/images:/tmp/ppe
+    restart: always
+
+  ppe-frontend:
+    image: ppe-frontend:latest
+    ports:
+      - "9031:7031"
+    depends_on:
+      - "ppe-backend"
+    environment:
+      - REACT_APP_BACKEND_API_URL=/
+    # entrypoint: ["npm", "start"]
+    restart: always

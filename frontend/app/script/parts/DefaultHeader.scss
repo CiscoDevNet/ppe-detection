@@ -1,0 +1,13 @@
+.default-header {
+    background-color: #ccc;
+    height: 3em;
+    .container {
+	a.nav-item {
+	    display: inline-block;
+	    padding: 1em;
+	    &-true {
+		background: white;
+	    }
+	}
+    }
+}

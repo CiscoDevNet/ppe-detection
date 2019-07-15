@@ -1,0 +1,121 @@
+FROM openhorizon/aarch64-tx2-cudabase
+
+
+# Install python and pip
+RUN apt-get update && apt-get install -y \
+  python3-pip \
+  python3-dev \
+  python3-numpy \
+  python3-wheel \
+  python3-tk
+
+# Install TF-gpu 1.5 with python3
+#RUN pip3 install --extra-index-url https://developer.download.nvidia.com/compute/redist/jp33 tensorflow-gpu
+
+RUN pip3 install --upgrade \
+  pip \
+  setuptools \
+  https://github.com/frankgu968/installTensorFlowTX2/raw/master/whl/tensorflow-1.5.0-cp35-cp35m-linux_aarch64.whl
+
+# Pillow dependencies
+RUN apt-get install -y libblas-dev \
+  liblapack-dev \
+  libjpeg-dev \
+  libgtk2.0-dev \
+  libhdf5-dev \
+  libhdf5-serial-dev \
+  libpng-dev \
+  python3-matplotlib \
+  zlib1g-dev
+
+### Keras dependencies
+RUN pip3 install --no-cache-dir --upgrade \
+  graphviz \
+  pydot \
+  pandas \
+  Pillow \
+  pyzmq==17.0.0 \
+  Flask
+
+RUN export CC=h5cc
+RUN HDF5_DIR=/usr/lib/aarch64-linux-gnu/hdf5/serial/ pip3 install --no-cache-dir h5py
+
+# Install scipy, keras
+RUN pip3 install --no-cache-dir --upgrade \
+  scipy \
+  keras \
+  scikit-learn
+
+RUN apt-get install -y build-essential make cmake cmake-curses-gui \
+                       g++ libavformat-dev libavutil-dev \
+                       libswscale-dev libv4l-dev libeigen3-dev \
+                       libglew-dev libgtk2.0-dev
+
+RUN apt-get install -y libdc1394-22-dev libxine2-dev \
+                       libgstreamer1.0-dev \
+                       libgstreamer-plugins-base1.0-dev
+
+RUN apt-get install -y libjpeg8-dev libjpeg-turbo8-dev libtiff5-dev \
+                       libjasper-dev libpng12-dev libavcodec-dev
+
+RUN apt-get install -y libxvidcore-dev libx264-dev libgtk-3-dev \
+                       libatlas-base-dev gfortran
+
+RUN apt-get install -y libopenblas-dev liblapack-dev liblapacke-dev
+
+RUN apt-get install -y qt5-default
+
+RUN apt-get install -y libopenexr22
+
+COPY cv2.cpython-35m-aarch64-linux-gnu.so /usr/local/lib/python3.5/dist-packages/
+
+COPY lib/libopencv* /usr/local/lib/
+
+#RUN rm /usr/lib/aarch64-linux-gnu/tegra/libcudnn.so.7
+
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/aarch64-linux-gnu/
+
+# these are for the face classification
+# RUN mkdir -p /ekholabs/face-classifier
+#
+# ADD src  /ekholabs/face-classifier/src
+#
+# ADD images /ekholabs/face-classifier/images
+#
+# ADD trained_models /ekholabs/face-classifier/trained_models
+#
+# WORKDIR /ekholabs/face-classifier
+#
+# ENV PYTHONPATH=$PYTHONPATH:src
+# ENV FACE_CLASSIFIER_PORT=8084
+# EXPOSE $FACE_CLASSIFIER_PORT
+
+### tensor
+
+ENV PATH=/usr/local/cuda/bin:$PATH
+ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
+# RUN apt-get install -y libcupti-doc
+ENV LD_LIBRARY_PATH=/usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH
+
+RUN apt install -y python3 python3-dev
+RUN apt install -y wget
+RUN wget https://bootstrap.pypa.io/get-pip.py -O get-pip.py
+RUN python3 get-pip.py
+
+RUN apt install -y libhdf5-dev
+RUN echo $LD_LIBRARY_PATH
+
+RUN sh -c "$(wget https://tfjetson.peterlee0127.com/installTF.sh -O -)"
+#RUN apt install lapack-dev gfortran
+RUN pip3 install tensorflow-1.12.0-cp35-cp35m-linux_aarch64.whl
+
+WORKDIR /opt/ppe
+
+COPY *.py ./
+
+COPY ./libcudnn /usr/lib/aarch64-linux-gnu/libcudnn
+
+RUN pip install requests
+
+CMD python3 video_demo.py --model_dir=./model  --video_file_name=/dev/video0 --show_video_window=0 --camera_id=default2

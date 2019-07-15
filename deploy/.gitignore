@@ -1,0 +1,5 @@
+release
+images
+*.tar
+*.tar.gz
+tmp

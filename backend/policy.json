@@ -1,0 +1,95 @@
+{
+  "policies": {
+    "/v1/detections": {
+      "read": [
+        {
+          "role": "*"
+        }
+      ],
+      "write": [
+        {
+          "role": "member"
+        },
+        {
+          "role": "*"
+        }
+      ]
+    },
+    "/v1/detections/{}": {
+      "read": [
+        {
+          "role": "*"
+        }
+      ],
+      "write": [
+        {
+          "role": "member"
+        },
+        {
+          "role": "*"
+        }
+      ],
+      "delete": [
+        {
+          "role": "member"
+        },
+        {
+          "role": "*"
+        }
+      ]
+    },
+    "/v1/images/{}": {
+      "read": [
+        {
+          "role": "*"
+        }
+      ],
+      "write": [
+        {
+          "role": "member"
+        },
+        {
+          "role": "*"
+        }
+      ],
+      "delete": [
+        {
+          "role": "member"
+        },
+        {
+          "role": "*"
+        }
+      ]
+    },
+    "/v1/policys/{}": {
+      "read": [
+        {
+          "role": "*"
+        }
+      ],
+      "write": [
+        {
+          "role": "member"
+        },
+        {
+          "role": "*"
+        }
+      ],
+      "delete": [
+        {
+          "role": "member"
+        },
+        {
+          "role": "*"
+        }
+      ]
+    },
+    "/v1/healthz": {
+      "read": [
+        {
+          "role": "*"
+        }
+      ]
+    }
+  }
+}

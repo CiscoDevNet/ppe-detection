@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "8f213367-3be1-442c-b1d1-ebfb64a68fec",
+		"name": "checkin-checkout",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "simple post flowIQ event",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cameraId\": \"camera1\",\n    \"camera_data\": {\n        \"header_count\": 1,\n        \"profiles\": [\n            {\n                \"userId\": \"some-uniq-user-id\"\n            }\n        ],\n        \"qrCodes\": [{\"data\": \"you can get this from console log\"}],\n        \"timestamp\": 1545715382852\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ppe_url}}/v1/flowiq_events",
+					"host": [
+						"{{ppe_url}}"
+					],
+					"path": [
+						"v1",
+						"flowiq_events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create member",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"jack@test.com\",\n\t\"persona\": \"Ruth\"\n}"
+				},
+				"url": {
+					"raw": "localhost:7030/v1/members",
+					"host": [
+						"localhost"
+					],
+					"port": "7030",
+					"path": [
+						"v1",
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show a member",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"jack@test.com\",\n\t\"name\": \"Jack\"\n}"
+				},
+				"url": {
+					"raw": "localhost:7030/v1/members",
+					"host": [
+						"localhost"
+					],
+					"port": "7030",
+					"path": [
+						"v1",
+						"members"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

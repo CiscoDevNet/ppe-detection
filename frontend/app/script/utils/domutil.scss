@@ -1,0 +1,28 @@
+.dialog-container {
+    position:fixed;
+    width: 100%;
+    height:100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.dialog-mask {
+    position: absolute;
+    width: 100%;
+    height:100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background:rgba(0, 0, 0, 0.5);
+}
+
+.dialog-box {
+    position: absolute;
+    left:50%;
+    top:50%;
+    min-width:1px;
+    min-height:1px;
+}

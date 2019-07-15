@@ -1,0 +1,28 @@
+[{
+    "key": "tenants",
+    "text": "Tenant",
+    "options": [{
+        "value": "IBM",
+        "text": "IBM"
+    }]
+}, {
+    "key": "users",
+    "text": "User",
+    "options": [{
+        "value": "user-1",
+        "text": "User One"
+    }, {
+        "value": "user-2",
+        "text": "User Two"
+    }]
+}, {
+    "key": "apps",
+    "text": "Application",
+    "options": [{
+        "value": "fastlane",
+        "text": "Fastlane"
+    }, {
+        "value": "webex",
+        "text": "Webex"
+    }]
+}]

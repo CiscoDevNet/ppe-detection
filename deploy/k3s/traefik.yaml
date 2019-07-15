@@ -1,0 +1,15 @@
+apiVersion: k3s.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  chart: https://%{KUBERNETES_API}%/static/charts/traefik-1.64.0.tgz
+  set:
+    rbac.enabled: "true"
+    ssl.enabled: "true"
+    ssl.insecureSkipVerify: "true"
+    dashboard.enabled: "true"
+    # test/test encoded in md5
+    dashboard.auth.basic.test: '$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/'
+    dashboard.domain: "traefik.k3s.com"

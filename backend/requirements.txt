@@ -1,0 +1,18 @@
+# The order of packages is significant, because pip processes them in the order
+# of appearance. Changing the order has an impact on the overall integration
+# process, which may cause wedges in the gate later.
+
+flask==1.0.2
+flask-cors==3.0.3
+PyJWT==1.5.3
+hvac==0.4.0
+argparse==1.4.0
+requests==2.18.4
+grequests==0.3.0
+logmatic-python===0.1.7
+wsgiserver===1.3
+cassandra-driver==3.13
+Flask-SocketIO==3.0.0
+eventlet==0.24.1
+simplejson==3.16.0
+redis==3.2.1

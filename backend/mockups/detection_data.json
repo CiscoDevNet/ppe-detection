@@ -1,0 +1,111 @@
+[
+  {
+    "id": "uuid10",
+    "cameraId": "camera1",
+    "timestamp": 1558506092000,
+    "status": 0,
+    "persons": [
+      {
+        "hardhat": true,
+        "vest": true
+      }
+    ],
+    "image": {
+      "height": 400,
+      "width": 600,
+      "format": "jpeg",
+      "raw": "",
+      "url": "http://ppe-backend:7030/v1/images/pic-1-0.jpeg"
+    },
+    "createdAt": 1558506697000,
+    "updatedAt": 1558506697000
+  },
+  {
+    "id": "uuid11",
+    "cameraId": "camera1",
+    "timestamp": 1558506292000,
+    "status": 1,
+    "persons": [
+      {
+        "hardhat": true,
+        "vest": false
+      },
+      {
+        "hardhat": true,
+        "vest": true
+      }
+    ],
+    "image": {
+      "height": 400,
+      "width": 600,
+      "format": "jpeg",
+      "raw": "",
+      "url": "http://ppe-backend:7030/v1/images/pic-2-1.jpeg"
+    },
+    "createdAt": 1558506697000,
+    "updatedAt": 1558506697000
+  },
+  {
+    "id": "uuid12",
+    "cameraId": "camera1",
+    "timestamp": 1558506192000,
+    "status": 2,
+    "persons": [
+      {
+        "hardhat": false,
+        "vest": true
+      }
+    ],
+    "image": {
+      "height": 400,
+      "width": 600,
+      "format": "jpeg",
+      "raw": "",
+      "url": "http://ppe-backend:7030/v1/images/pic-1-2.jpeg"
+    },
+    "createdAt": 1558506697000,
+    "updatedAt": 1558506697000
+  },
+  {
+    "id": "uuid13",
+    "cameraId": "camera1",
+    "timestamp": 1558506392000,
+    "status": 3,
+    "persons": [
+      {
+        "hardhat": false,
+        "vest": false
+      }
+    ],
+    "image": {
+      "height": 252,
+      "width": 376,
+      "format": "jpeg",
+      "raw": "",
+      "url": "http://ppe-backend:7030/v1/images/pic-1-3-376-252.jpeg"
+    },
+    "createdAt": 1558506697000,
+    "updatedAt": 1558506697000
+  },
+  {
+    "id": "uuid20",
+    "cameraId": "camera2",
+    "timestamp": 1558506192000,
+    "status": 0,
+    "persons": [
+      {
+        "hardhat": true,
+        "vest": true
+      }
+    ],
+    "image": {
+      "height": 443,
+      "width": 804,
+      "format": "jpeg",
+      "raw": "",
+      "url": "http://ppe-backend:7030/v1/images/pic-1-0-2.jpeg"
+    },
+    "createdAt": 1558506697000,
+    "updatedAt": 1558506697000
+  }
+]

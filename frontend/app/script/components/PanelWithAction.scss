@@ -1,0 +1,13 @@
+.panel-with-action {
+    .panel-header {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	line-height: 2em;
+	font-weight: bold;
+	.panel-actions {
+	    text-align: right;
+	}
+    }
+    .panel-body {
+    }
+}

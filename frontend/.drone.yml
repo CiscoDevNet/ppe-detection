@@ -1,0 +1,107 @@
+## Drone 0.5 pipeline
+pipeline:
+  build-integration:
+    image: node:8.6.0
+    environment:
+      - NPM_CONFIG_LOGLEVEL=warn
+    commands:
+      - npm install
+      - DRONE_COMMIT=${DRONE_COMMIT} npm run integration
+    when:
+      event: [ push ]
+
+
+  publish-devnet-ui-artifacts:
+    image: containers.cisco.com/devnet/app-registry:cred_latest
+    source: ./dist
+    target: env:app.config:config.BASENAME
+    tags:
+      - "${DRONE_COMMIT:0:7}"
+      - latest
+    when:
+      event: [ push ]
+
+  publish-devnet-ui-artifacts-master-branch:
+    image: containers.cisco.com/devnet/app-registry:cred_latest
+    source: ./dist
+    target: env:app.config:config.BASENAME
+    tags:
+      - latest
+    when:
+      branch: master
+      event: [ push ]
+
+
+  build-staging:
+    image: node:8.6.0
+    environment:
+      - NPM_CONFIG_LOGLEVEL=warn
+    commands:
+      - npm install
+      - DRONE_COMMIT=${DRONE_COMMIT} npm run stage
+    when:
+      event: [ tag ]
+
+
+  publish-release-staging:
+    image: containers.cisco.com/devnet/app-registry:cred_latest
+    source: ./dist
+    target: env:app.config:config.BASENAME
+    tags:
+      - "release/${DRONE_BRANCH##refs/tags/}/staging"
+    when:
+      event: [ tag ]
+
+
+  build-production:
+    image: node:8.6.0
+    environment:
+      - NPM_CONFIG_LOGLEVEL=warn
+    commands:
+      - npm install
+      - DRONE_COMMIT=${DRONE_COMMIT} npm run production
+    when:
+      event: [ tag ]
+
+
+  publish-release-production:
+    image: containers.cisco.com/devnet/app-registry:cred_latest
+    source: ./dist
+    target: env:app.config:config.BASENAME
+    tags:
+      - "release/${DRONE_BRANCH##refs/tags/}/prod"
+    when:
+      event: [ tag ]
+
+
+  spark:
+    image: alpine:3.4
+    commands:
+      - apk update
+      - apk add jq
+      - apk add --no-cache curl
+      - export TOKEN=YzRkNDE3YTItYWEwZC00NjZmLThkNjctNzYxMmUwZDkwZjBkYTM4NjhlNTktNGEx
+      - export roomID=Y2lzY29zcGFyazovL3VzL1JPT00vZjlmZDljMDAtMzJlZi0xMWU4LWJjYTEtNzc1MGFjMTIyOTA3
+      - export BASENAME=$(jq ."config.BASENAME" dist/app.config.json -r)
+      - export MESSAGE="[$DRONE_REPO_NAME:$DRONE_COMMIT_BRANCH] Build:[$DRONE_BUILD_NUMBER]($DRONE_BUILD_LINK). Author:$DRONE_COMMIT_AUTHOR. Commit:[${DRONE_COMMIT:0:7}]($DRONE_COMMIT_LINK). Message:$DRONE_COMMIT_MESSAGE. Commit build:https://${DRONE_COMMIT:0:7}.ui.devnetcloud.com/"$BASENAME"/. "
+      - if [[ "$DRONE_COMMIT_BRANCH" == "master" ]]; then export MESSAGE=$MESSAGE" Integration build:https://devnetapps.cisco.com/"$BASENAME"/."; fi;
+      - curl https://api.ciscospark.com/v1/memberships -X POST -H "Authorization:Bearer $TOKEN" --data "roomId=$roomID" --data "personEmail=$DRONE_COMMIT_AUTHOR_EMAIL"
+      - curl https://api.ciscospark.com/v1/messages -X POST -H "Authorization:Bearer $TOKEN" --data "roomId=$roomID" --data "markdown=$MESSAGE"
+    when:
+      status: [ success ]
+
+  spark-failure:
+    image: alpine:3.4
+    commands:
+      - apk update
+      - apk add jq
+      - apk add --no-cache curl
+      - export TOKEN=YzRkNDE3YTItYWEwZC00NjZmLThkNjctNzYxMmUwZDkwZjBkYTM4NjhlNTktNGEx
+      - export roomID=Y2lzY29zcGFyazovL3VzL1JPT00vZjlmZDljMDAtMzJlZi0xMWU4LWJjYTEtNzc1MGFjMTIyOTA3
+      - export BASENAME=$(jq ."config.BASENAME" dist/app.config.json -r)
+      - export MESSAGE="[$DRONE_REPO_NAME:$DRONE_COMMIT_BRANCH] Build failure!! [$DRONE_BUILD_NUMBER]($DRONE_BUILD_LINK). Author:$DRONE_COMMIT_AUTHOR. Commit:[${DRONE_COMMIT:0:7}]($DRONE_COMMIT_LINK). Message:$DRONE_COMMIT_MESSAGE"
+      - curl https://api.ciscospark.com/v1/memberships -X POST -H "Authorization:Bearer $TOKEN" --data "roomId=$roomID" --data "personEmail=$DRONE_COMMIT_AUTHOR_EMAIL"
+      - curl https://api.ciscospark.com/v1/messages -X POST -H "Authorization:Bearer $TOKEN" --data "roomId=$roomID" --data "markdown=$MESSAGE"
+    when:
+      status: [ failure ]
+
