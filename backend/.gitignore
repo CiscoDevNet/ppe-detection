@@ -1,0 +1,13 @@
+vendor
+debug
+node_modules
+__pycache__
+
+*.swp
+*.tar
+release
+.vscode
+.images
+images
+tmp
+tmp*

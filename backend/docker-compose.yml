@@ -1,0 +1,12 @@
+version: '2.1'
+
+services:
+  ppe-backend:
+    image: ppe-backend
+    build: .
+    environment:
+      #- PROVIDER=spark
+      - PROVIDER=console
+      - PYTHONUNBUFFERED=1
+    ports:
+      - 8080:8080
