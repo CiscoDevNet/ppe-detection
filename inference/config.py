@@ -6,7 +6,7 @@ Author: zmingen
 import os
 
 # Send detection result to this URL
-detection_api = os.getenv("PPE_DETECTION_URL", "http://ppe-demo.devnetcloud.com/v1/detections")
+detection_api = os.getenv("PPE_DETECTION_URL", "http://localhost:8080/v1/detections")
 
 # Message sending interval, time unit is millisecond
 message_send_interval = int(os.getenv("PPE_MESSAGE_SEND_INTERVAL", 1000))
@@ -29,6 +29,6 @@ storage_image_width = int(os.getenv("PPE_STORAGE_IMAGE_WIDTH", 640))
 storage_image_height = int(os.getenv("PPE_STORAGE_IMAGE_HEIGHT", 360))
 
 # Input Type, ["camera", "file"]
-input_type = os.getenv("PPE_INPUT_TYPE", "camera")
+input_type = os.getenv("PPE_INPUT_TYPE", "file")
 
 
