@@ -3,8 +3,10 @@
 Real time Personal Protection Equipment(PPE) detection running on NVIDIA Jetson TX2
 
   - Person, HardHat and Vest detection
-  - Input from Video file or USB Camera 
-  - A backend service which can push message to "console" or "webex teams space" when an abnormal event is detected. 
+  - Input from Video file or USB Camera
+  - A backend service which can push message to "console" or "webex teams space" when an abnormal event is detected.
+
+![PPE Image](data/ppe.jpg)
 
 # Requirements
 
@@ -54,6 +56,3 @@ setup webex-teams(spark)
 
 # Training Data & Training Program
 coming soon!
-
-
-
