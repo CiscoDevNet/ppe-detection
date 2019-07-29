@@ -1,0 +1,59 @@
+# Personal Protection Equipment Detection based on Deep Learning
+
+Real time Personal Protection Equipment(PPE) detection running on NVIDIA Jetson TX2
+
+  - Person, HardHat and Vest detection
+  - Input from Video file or USB Camera 
+  - A backend service which can push message to "console" or "webex teams space" when an abnormal event is detected. 
+
+# Requirements
+
+  - TensorFlow: newer than 1.12.0
+  - OpenCV
+  - Flask
+  - Requests
+  - Python3
+
+# How to run
+
+## Video Inference Service
+```sh
+$ python3 video_demo.py --model_dir=xxx  --video_file_name=xxx --show_video_window=xxx --camera_id=xxx
+```
+* model_dir: the path to model directory
+* video_file_name: input video file name or usb camera device name, such as "/dev/video0"
+* show_video_window: the flag to show video window, the options are {0, 1}
+* camera_id: camera identifier, represent deployed camera
+
+## Backend Service
+run the following command
+```
+pip3 install -r requirements.txt
+python3 main.py
+```
+
+run application as docker
+```
+docker-compose up
+or
+docker-compose up --build
+```
+
+send notification
+
+By default, it will use the console notification, this just print the notification to stdout.
+If you want to use spark, use change the config referring to `config.py`.
+Or you can write your own if you write your provider inheriting the `notification.Provider`
+
+setup webex-teams(spark)
+
+* create a robot referring to https://developer.cisco.com/webex-teams/, you will get the token
+* create a webex-teams room and add the robot to that team
+* go to https://developer.webex.com/docs/api/v1/rooms/list-rooms to get the new created room id
+* put the above info to the `config.py`
+
+# Training Data & Training Program
+coming soon!
+
+
+
