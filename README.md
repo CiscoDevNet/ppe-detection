@@ -4,7 +4,7 @@ Real time Personal Protection Equipment(PPE) detection running on NVIDIA Jetson 
 
   - Person, HardHat and Vest detection
   - Input from Video file or USB Camera
-  - A backend service which can push message to "console" or "webex teams space" when an abnormal event is detected.
+  - A backend service which can push message to "console" or "Cisco® Webex Teams space" when an abnormal event is detected.
 
 ![PPE Image](data/ppe.jpg)
 
@@ -44,10 +44,10 @@ docker-compose up --build
 send notification
 
 By default, it will use the console notification, this just print the notification to stdout.
-If you want to use spark, use change the config referring to `config.py`.
+If you want to use Cisco® Webex Teams, use change the config referring to `config.py`.
 Or you can write your own if you write your provider inheriting the `notification.Provider`
 
-setup webex-teams(spark)
+setup Cisco® Webex Teams
 
 * create a robot referring to https://developer.cisco.com/webex-teams/, you will get the token
 * create a webex-teams room and add the robot to that team

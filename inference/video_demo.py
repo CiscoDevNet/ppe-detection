@@ -162,6 +162,41 @@ def post_message(camera_id, output_dict, image, min_score_thresh):
     return False
 
 
+def image_processing(graph, category_index, image_file_name, show_video_window):
+
+    img = cv2.imread(image_file_name)
+    image_expanded = np.expand_dims(img, axis=0)
+
+    with graph.as_default():
+        ops = tf.get_default_graph().get_operations()
+        all_tensor_names = {output.name for op in ops for output in op.outputs}
+        tensor_dict = {}
+        for key in [
+            'num_detections', 'detection_boxes', 'detection_scores',
+            'detection_classes', 'detection_masks'
+        ]:
+            tensor_name = key + ':0'
+            if tensor_name in all_tensor_names:
+                tensor_dict[key] = tf.get_default_graph().get_tensor_by_name(
+                    tensor_name)
+        with tf.Session() as sess:
+            output_dict = run_inference_for_single_image(image_expanded, sess, tensor_dict)
+
+            vis_utils.visualize_boxes_and_labels_on_image_array(
+                img,
+                output_dict['detection_boxes'],
+                output_dict['detection_classes'],
+                output_dict['detection_scores'],
+                category_index,
+                instance_masks=output_dict.get('detection_masks'),
+                use_normalized_coordinates=True,
+                line_thickness=4)
+
+            if show_video_window:
+                cv2.imshow('ppe', img)
+                cv2.waitKey(5000)
+
+
 def video_processing(graph, category_index, video_file_name, show_video_window, camera_id, run_flag, message_queue):
     cap = cv2.VideoCapture(video_file_name)
 
@@ -268,6 +303,8 @@ def main():
     print("video processing")
     video_processing(graph, category_index, args.video_file_name, args.show_video_window, args.camera_id, run_flag, message_queue)
     p.join()
+    
+    #image_processing(graph, category_index, './examples/002.jpg', True)
 
 if __name__ == '__main__':
     main()
