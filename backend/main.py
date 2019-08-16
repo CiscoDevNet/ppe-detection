@@ -12,7 +12,7 @@ notification_svc = NotificationFactory.instance(config)
 MSG_TEMPLATE = """
 ### ppe demo
 **Alert** at **{point}** at {time}
-> tatal_person={total_person} without_hardhat={without_hardhat} without_vest={without_vest} without_both={without_both}
+> total_person={total_person} without_hardhat={without_hardhat} without_vest={without_vest} without_both={without_both}
 """
 
 

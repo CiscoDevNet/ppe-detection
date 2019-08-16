@@ -54,5 +54,17 @@ setup Cisco® Webex Teams
 * go to https://developer.webex.com/docs/api/v1/rooms/list-rooms to get the new created room id
 * put the above info to the `config.py`
 
+Alert Message Format
+
+![PPE Image](data/alert.jpg)
+
+* total_person: number of people detected
+* without_hardhat: number of people without hard hat
+* without_vest: number of people without Vest
+* without_both: number of people without hard hat and vest
+
 # Training Data & Training Program
 coming soon!
+
+# Reference work
+* TensorFlow Object Detection: https://github.com/tensorflow/models/tree/master/research/object_detection
