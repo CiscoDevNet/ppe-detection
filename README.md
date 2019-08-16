@@ -64,8 +64,7 @@ Alert Message Format
 * without_both: number of people without hard hat and vest
 
 # Training Program
-Based on TensorFlow Object Detection API, using pretrained ssd_mobilenet_v1 on COCO dataset to initialize weights, and made some tuning work on it.
-Source code will coming soon.
+Based on TensorFlow Object Detection API, using pretrained ssd_mobilenet_v1 on COCO dataset to initialize weights.
 
 # Training Data
 coming soon!
