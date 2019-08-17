@@ -33,8 +33,9 @@ $ ls /dev/video*
 ## Backend Service
 run the following command
 ```
-pip3 install -r requirements.txt
-python3 main.py
+$ cd backend
+$ pip3 install -r requirements.txt
+$ python3 main.py
 ```
 
 run application as docker
